@@ -7,10 +7,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.bobpaulin.meetup</groupId>
-  <artifactId>meetup-deduplicator</artifactId>
+  <artifactId>meetup-tools</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>Meetup Deduplicator</name>
+  <name>Meetup Tools</name>
 
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
