@@ -1,5 +1,7 @@
 package com.bobpaulin.meetup
 
+@Grab(group='net.sf.json-lib', module='json-lib', version='2.3', classifier='jdk15')
+@Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7.1' )
 import groovyx.net.http.HTTPBuilder
 import java.util.concurrent.CountDownLatch
 import static groovyx.net.http.Method.GET
@@ -41,13 +43,15 @@ class MeetupMemberRealName {
                     // response handler for a successful response code:
                     response.success = { resp, json ->
                         // Check returned status'
+                        
                         json.each{
+                            def personId = it.id
                             it.group_profile.answers.each{
-                                if(it.question_id.equals(Long.parseLong(questionNumber)))
+                                if("${it.question_id}".equals(questionNumber))
                                 {
                                     if(it.answer != null && it.answer?.trim())
                                     {
-                                        idToNameMapping.put(it.id, it.answer);
+                                        idToNameMapping.put(personId, it.answer);
                                     }
                                 }
                             }
@@ -65,6 +69,7 @@ class MeetupMemberRealName {
                     }
                 }
         }
+        
         url = "https://api.meetup.com/${groupName}/events/${eventId}/rsvps?&sign=true&key=${key}&photo-host=public"
         http.request(url, GET, JSON) { req ->
             requestContentType = JSON;
@@ -74,16 +79,20 @@ class MeetupMemberRealName {
             response.success = { resp, json ->
                 // Check returned status'
                 json.each{
-                    def memberId = it.member.id
-                    def fullName = idToNameMapping.get(memberId)
-                    if(fullName)
-                    {
-                        attendeeNames.add(fullName)
-                    }
-                    else
-                    {
-                        attendeeNames.add(it.member.name)
-                    }
+                	def attendeeResponse = it.response
+                	if(attendeeResponse == 'yes' || attendeeResponse == 'waitlist')
+                	{
+	                    def memberId = it.member.id
+	                    def fullName = idToNameMapping.get(memberId)
+	                    if(fullName)
+	                    {
+	                        attendeeNames.add(fullName)
+	                    }
+	                    else
+	                    {
+	                        attendeeNames.add(it.member.name)
+	                    }
+	                }
                 }
                 attendeeNames.each {  
                     println it
