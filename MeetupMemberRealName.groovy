@@ -1,4 +1,3 @@
-package com.bobpaulin.meetup
 
 @Grab(group='net.sf.json-lib', module='json-lib', version='2.3', classifier='jdk15')
 @Grab(group='org.codehaus.groovy.modules.http-builder', module='http-builder', version='0.7.1' )

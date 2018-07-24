@@ -1,4 +1,3 @@
-package com.bobpaulin.meetup
 
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.Method.GET
